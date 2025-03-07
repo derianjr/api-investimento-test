@@ -7,13 +7,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\InvestmentRepository;
 
 class InvestmentViewController extends AbstractController
 {
     #[Route('/investment/{id}', name: 'investment_view')]
-    public function view(int $id, EntityManagerInterface $entityManager): Response
+    public function view(int $id, InvestmentRepository $repository): Response
     {
-        $investment = $entityManager->getRepository(Investment::class)->find($id);
+      $investment = $repository->find($id);
 
         if (!$investment) {
             throw $this->createNotFoundException('Investimento não encontrado');

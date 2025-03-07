@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/investment/create', name: 'investment_create', methods: ['POST'])]
-class InvestmentController extends AbstractController
+class InvestmentCreateController extends AbstractController
 {
     public function __invoke(
         Request $request,
