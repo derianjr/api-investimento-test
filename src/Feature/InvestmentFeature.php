@@ -10,10 +10,9 @@ class InvestmentFeature
 {
     public function __construct(
         private InvestmentRepository $investmentRepository,
-
     ) {}
 
-    public function execute( CreateInvestmentDTO $dto): Investment
+    public function execute(CreateInvestmentDTO $dto): Investment
     {
         return $this->investmentRepository->save(new Investment($dto));
     }
