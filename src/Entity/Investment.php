@@ -86,14 +86,14 @@ class Investment implements \JsonSerializable
 
     public function jsonSerialize(): array
     {
-        return [
-            'id' => $this->id,
-            'criado_em' => $this->createdAt->format('Y-m-d H:i:s'),
-            'valor_inicial' => $this->initialValue,
-            'saldo' => $this->balance,
-            'retirado_em' => $this->withdrawnAt?->format('Y-m-d H:i:s'),
-            'retirado' => $this->isWithdrawn,
-            'owner' => $this->owner,
+    return [
+        'id' => $this->id,
+        'criado_em' => $this->createdAt->format('Y-m-d H:i:s'),
+        'valor_inicial' => $this->initialValue,
+        'saldo' => $this->balance,
+        'retirado_em' => $this->withdrawnAt?->format('Y-m-d H:i:s'),
+        'retirado' => $this->isWithdrawn,
+        'owner' => $this->owner,
         ];
     }
 
