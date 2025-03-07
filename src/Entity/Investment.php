@@ -9,6 +9,7 @@ use App\Entity\User;
 use App\DTO\CreateInvestmentDTO;
 use App\Investment\Exceptions\InvestmentException;
 use App\jsonSerializable;
+use App\Controller\WithdrawController;
 
 /** @SuppressWarnings(PHPMD.ExcessivePublicCount) */
 
@@ -55,33 +56,42 @@ class Investment implements \JsonSerializable
         $this->balance = $this->initialValue * pow(1.0052, $months);
     }
 
-    public function withdraw(DateTimeImmutable $withdrawDate): float
+    public function withdraw(float $amount, DateTimeImmutable $withdrawDate): float
     {
         if ($this->isWithdrawn) {
             throw new InvestmentException("O investimento já foi retirado.");
         }
-
+    
         if ($withdrawDate < $this->createdAt) {
             throw new InvestmentException("A data de retirada não pode ser antes da criação do investimento.");
         }
-
+    
+        if ($amount <= 0) {
+            throw new InvestmentException("O valor do saque deve ser positivo.");
+        }
+    
         $this->calculateBalance();
-
-        $profit = $this->balance - $this->initialValue;
+    
+        if ($amount > $this->balance) {
+            throw new InvestmentException("Saldo insuficiente para realizar o saque.");
+        }
+    
+        $profit = $amount; 
         $taxPercentage = match (true) {
             $withdrawDate->diff($this->createdAt)->y < 1 => 22.5,
             $withdrawDate->diff($this->createdAt)->y < 2 => 18.5,
             default => 15,
         };
-
+    
         $tax = ($profit / $this->balance) * ($profit * ($taxPercentage / 100));
-        $finalAmount = $this->balance - $tax;
-
+        $finalAmount = $amount - $tax;
+    
         $this->isWithdrawn = true;
         $this->withdrawnAt = $withdrawDate;
-        $this->balance = 0;
-
+        $this->balance -= $amount; 
+    
         return $finalAmount;
+    
     }
 
     public function jsonSerialize(): array
