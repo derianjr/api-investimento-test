@@ -15,7 +15,7 @@ class InvestmentController extends AbstractController
 {
     public function __invoke(
         Request $request,
-        InvestmentFeature $service,
+        InvestmentFeature $feature,
     ): JsonResponse {
         /** @var User $user */
         $user = $this->getUser();
@@ -28,16 +28,16 @@ class InvestmentController extends AbstractController
                 ]
             ], 401);
         }
-        $pauload = $request->getPayload();
+        $payload = $request->getPayload();
 
         $dto = new CreateInvestmentDTO(
             $user,
-            (float) $pauload->get('initial_value'),
-            new \DateTimeImmutable($pauload->get('created_at'))
+            (float) $payload->get('initial_value'),
+            new \DateTimeImmutable($payload->get('created_at'))
         );
 
-        $service->execute($user, $dto);
+        $investment = $feature->execute($dto);
 
-        return $this->json(['status' => JsonResponse::HTTP_OK]);
+        return $this->json(['status' => JsonResponse::HTTP_OK, 'investment' => $investment]);  
     }
 }

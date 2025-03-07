@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class CreateInvestmentDTO
+    readonly class CreateInvestmentDTO
 {
     #[Assert\NotBlank(message: "O usuário é obrigatório.")]
     public User $user;

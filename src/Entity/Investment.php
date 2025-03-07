@@ -8,11 +8,12 @@ use Webmozart\Assert\Assert;
 use App\Entity\User;
 use App\DTO\CreateInvestmentDTO;
 use App\Investment\Exceptions\InvestmentException;
+use App\jsonSerializable;
 
 /** @SuppressWarnings(PHPMD.ExcessivePublicCount) */
 
 #[ORM\Entity(repositoryClass: "App\Repository\InvestmentRepository")]
-class Investment
+class Investment implements \JsonSerializable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -81,6 +82,19 @@ class Investment
         $this->balance = 0;
 
         return $finalAmount;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'criado_em' => $this->createdAt->format('Y-m-d H:i:s'),
+            'valor_inicial' => $this->initialValue,
+            'saldo' => $this->balance,
+            'retirado_em' => $this->withdrawnAt?->format('Y-m-d H:i:s'),
+            'retirado' => $this->isWithdrawn,
+            'owner' => $this->owner,
+        ];
     }
 
     public function id(): int
