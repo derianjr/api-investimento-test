@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Investment;
-use App\Investment\Exceptions\InvestmentException;
+use App\Exceptions\InvestmentException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,7 +23,7 @@ class WithdrawController extends AbstractController
         if (!$user) {
             return $this->json(['error' => 'Usuário não autenticado'], 401);
         }
-
+        
         $investment = $entityManager->getRepository(Investment::class)->find($id);
         
         if (!$investment || $investment->owner() !== $user) {

@@ -5,27 +5,26 @@ security:
     providers:
         app_user_provider:
             entity:
-                class: App\Entity\User
-                property: email
+                class: App\Entity\User  # Caminho correto para sua entidade User
+                property: email          # Usando 'email' como identificador de usuário
 
     firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
-            lazy: true
-            provider: app_user_provider
+        login:
+            pattern: ^/api/login  # Mantém o padrão '/api/login'
+            stateless: true
             json_login:
-                check_path: /api/login_check
-                username_path: email
-                password_path: password
+                check_path: /api/login_check  # Rota de autenticação correta
+                username_path: email          # Mapeando a chave 'email' para 'username'
+                password_path: password       # O campo da senha no corpo da requisição JSON
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            provider: app_user_provider  # Associando o provider de usuário ao firewall de login
+
         api:
-            pattern: ^/api/
+            pattern: ^/api
             stateless: true
             jwt: ~
 
     access_control:
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
-        - { path: ^/investment, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Investment\Exceptions;
+namespace App\Exceptions;
 
-use RuntimeException;
+use Exception;
 
-class InvestmentException extends RuntimeException
+class InvestmentException extends Exception
 {
     public static function investmentAlreadyWithdrawn(): self
     {

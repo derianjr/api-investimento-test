@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert;
 use App\Entity\User;
 use App\DTO\CreateInvestmentDTO;
-use App\Investment\Exceptions\InvestmentException;
+use App\Exceptions\InvestmentException;
 use App\jsonSerializable;
 use App\Controller\WithdrawController;
 
@@ -103,7 +103,7 @@ class Investment implements \JsonSerializable
         'saldo' => $this->balance,
         'retirado_em' => $this->withdrawnAt?->format('Y-m-d H:i:s'),
         'retirado' => $this->isWithdrawn,
-        'owner' => $this->owner,
+        'owner_id' => $this->owner->getId(),        
         ];
     }
 
