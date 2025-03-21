@@ -61,7 +61,14 @@ Exemplo:
 ### Endpoint de Retirada de um Investimento Criado:
  ```bash
 [POST] http://127.0.0.1/api/investment/withdraw/{ID}
-```   
+``` 
+```bash
+{
+  "withdraw_date": "2025-03-25",
+  "amount": 100000
+}
+``` 
+  
 ### Visualizar um Investimento Específico:
  ```bash
 [GET] http://127.0.0.1/api/investment/{ID}
